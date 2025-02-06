@@ -1,0 +1,37 @@
+# Create a random "embedding" matrix with N=10 million rows, D=128 dims.
+# Min/Max=0..1, and about 10% non-zero for demonstration.
+# Note: Generating 10M x 128 is large. This ‘X’ can easily be multiple gigabytes in memory.
+# SystemDS will handle block-based operations and can spill to disk if needed.
+
+
+N = 10000000;
+D = 128;
+
+X = rand(rows=N, cols=D,
+         min=0, max=1,
+         sparsity=0.1,
+         pdf="uniform",
+         seed=123);
+
+
+q = rand(rows=1, cols=D,
+         min=0, max=1,
+         sparsity=1.0,
+         pdf="uniform",
+         seed=999);
+
+rowNorms = sqrt( rowSums( X * X ) )
+qNorm = sqrt( sum( q * q ) )
+dp = X %*% t(q)
+cosSim = dp / (rowNorms * qNorm)
+
+# top-K
+indexed = cbind( cosSim, seq(1, N, 1) )
+sorted = order( target=indexed, by=1, decreasing=TRUE )
+top10 = sorted[1:10,]
+
+
+print("Done generating X");
+print(toString(top10));
+write(top10, "./tmp", format="text");
+#write(q, "./tmp", format="text");
