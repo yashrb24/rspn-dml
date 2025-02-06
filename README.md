@@ -9,3 +9,6 @@ Relational Sum-Product Networks Implementation in Apache SystemDS
 1. Builtin functions: https://apache.github.io/systemds/site/builtins-reference
 2. DML Language reference: https://apache.github.io/systemds/site/dml-language-reference
 3. Command to test out: `spark-submit target/SystemDS.jar -f hello.dml`
+
+## How it works
+Will be mostly borrowing implementation of SPNs from [SPFlow](https://github.com/SPFlow/SPFlow) and the RSPN implementation from [DeepDB](https://github.com/DataManagementLab/deepdb-public/tree/master/rspn)
